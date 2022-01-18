@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ToDoResponse {
-    private Long id;
-    private Long status;
-    private String message;
+  private Long id;
+  private Long status;
+  private String message;
 }

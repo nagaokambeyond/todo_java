@@ -9,15 +9,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="todo")
+@Table(name = "todo")
 public class ToDo {
-    @Id
-    private Long id;
+  @Id
+  private Long id;
 
-    @Column(nullable = false)
-    private Long status;
+  @Column(nullable = false)
+  private Long status;
 
-    @Column(nullable = false)
-    private String message;
+  @Column(nullable = false)
+  private String message;
 
 }

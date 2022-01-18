@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ToDoController {
-    @Autowired
-    ToDoRepository repository;
+  @Autowired
+  ToDoRepository repository;
 
-    @GetMapping("/todo")
-    public List<ToDoResponse> getToDoList(){
-        var result = new ArrayList<ToDoResponse>();
-        var map = new ModelMapper();
-        for(var row : repository.findAll()){
-            var todo = map.map(row, ToDoResponse.class);
-            result.add(todo);
-        }
-
-        return result;
+  @GetMapping("/todo")
+  public List<ToDoResponse> getToDoList() {
+    var result = new ArrayList<ToDoResponse>();
+    var map = new ModelMapper();
+    for (var row : repository.findAll()) {
+      var todo = map.map(row, ToDoResponse.class);
+      result.add(todo);
     }
+
+    return result;
+  }
 }
