@@ -17,12 +17,10 @@ public class ToDoController {
     @Autowired
     ToDoRepository repository;
 
-    @Autowired
-    ModelMapper map;
-
     @GetMapping("/todo")
     public List<ToDoResponse> getToDoList(){
         var result = new ArrayList<ToDoResponse>();
+        var map = new ModelMapper();
         for(var row : repository.findAll()){
             var todo = map.map(row, ToDoResponse.class);
             result.add(todo);
