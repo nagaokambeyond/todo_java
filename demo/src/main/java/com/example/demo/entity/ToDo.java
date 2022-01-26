@@ -15,9 +15,14 @@ public class ToDo {
   private Long id;
 
   @Column(nullable = false)
-  private Long status;
+  private Long statusId;
 
   @Column(nullable = false)
   private String message;
 
+  @Column(nullable = false)
+  private Integer done;
+
+  @Column(nullable = false)
+  private String updateDatetime;
 }
