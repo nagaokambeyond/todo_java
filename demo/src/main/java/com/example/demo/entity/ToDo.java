@@ -24,5 +24,8 @@ public class ToDo {
   private Integer done;
 
   @Column(nullable = false)
+  private Long createUserId;
+
+  @Column(nullable = false)
   private String updateDatetime;
 }

@@ -11,20 +11,21 @@ import com.example.demo.entity.Status;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ToDoListRestController {
+@RequestMapping("/api/v1/todos")
+public class ToDosRestController {
   @Autowired
-  ToDoRepository todo;
+  protected ToDoRepository todo;
 
   @Autowired
-  StatusRepository status;
+  protected StatusRepository status;
 
-  @GetMapping("/todolist")
+  @GetMapping
   public List<ToDoListResponse> getToDoList() {
-    var mod = new ModelMapper();
-
+    ModelMapper mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll().stream()
       .collect(
           Collectors.toMap(Status::getId, r->r)
@@ -34,7 +35,7 @@ public class ToDoListRestController {
     final List <ToDoListResponse> result = todo.findAll()
       .stream()
       .map(r -> {
-        ToDoListResponse row = mod.map(r, ToDoListResponse.class);
+        final ToDoListResponse row = mod.map(r, ToDoListResponse.class);
         row.setStatusName(map.get(row.getStatusId()).getStatusName());
 
         return row;
