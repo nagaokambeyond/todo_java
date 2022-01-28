@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
 import com.example.demo.response.ToDoListResponse;
+import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,18 +26,21 @@ public class ToDosRestController {
   protected StatusRepository status;
 
   @GetMapping
-  public List<ToDoListResponse> getToDoList() {
+  public ToDoListResponse getToDoList(
+      @RequestParam(required = false) Integer page
+    ) {
     ModelMapper mod = new ModelMapper();
-    final Map<Long, Status> map = status.findAll().stream()
+    final Map<Long, Status> map = status.findAll()
+      .stream()
       .collect(
           Collectors.toMap(Status::getId, r->r)
       )
     ;
 
-    final List <ToDoListResponse> result = todo.findAll()
+    final List <ToDoListDataResponse> data = todo.findAll()
       .stream()
       .map(r -> {
-        final ToDoListResponse row = mod.map(r, ToDoListResponse.class);
+        final ToDoListDataResponse row = mod.map(r, ToDoListDataResponse.class);
         row.setStatusName(map.get(row.getStatusId()).getStatusName());
 
         return row;
@@ -43,6 +48,9 @@ public class ToDosRestController {
       .collect(Collectors.toList())
     ;
 
+    var result = new ToDoListResponse();
+    result.setData(data);
+    result.setPage(page);
     return result;
   }
 }

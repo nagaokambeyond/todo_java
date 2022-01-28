@@ -1,13 +1,10 @@
 package com.example.demo.response;
 
+import java.util.List;
 import lombok.Data;
 
 @Data
 public class ToDoListResponse {
-  private Long id;
-  private Long statusId;
-  private String statusName;
-  private String message;
-  private Integer done;
-  private String updateDatetime;
+  private Integer page;
+  private List<ToDoListDataResponse> data;
 }
