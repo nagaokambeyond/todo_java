@@ -5,14 +5,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
+import com.example.demo.request.ToDoRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.ToDo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +34,20 @@ public class ToDosRestController {
   protected StatusRepository status;
 
   @PostMapping
-  public void save() {
+  public void save(
+      @RequestBody @Validated ToDoRequest form,
+      BindingResult result
+  ) {
+    if (result.hasErrors()){
+      return;
+    }
+
     final var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    var entity = new ToDo();
-    entity.setMessage("test");
+    var mod = new ModelMapper();
+    var entity = mod.map(form, ToDo.class);;
     entity.setCreateUserId(1L);
     entity.setDone(0);
-    entity.setStatusId(0L);
     entity.setUpdateDatetime(LocalDateTime.now().format(dtf));
     todo.save(entity);
   }
@@ -45,7 +56,7 @@ public class ToDosRestController {
   public ToDoListResponse getToDoList(
       @RequestParam(required = false) Integer page
     ) {
-    ModelMapper mod = new ModelMapper();
+    var mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll()
       .stream()
       .collect(
