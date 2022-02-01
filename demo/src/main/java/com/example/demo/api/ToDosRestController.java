@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
-import com.example.demo.request.ToDoRequest;
+import com.example.demo.request.ToDoCreateRequest;
+import com.example.demo.request.ToDoDeleteRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
@@ -17,11 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 @RestController
@@ -33,9 +37,15 @@ public class ToDosRestController {
   @Autowired
   protected StatusRepository status;
 
+  @DeleteMapping("{id}")
+  ResponseEntity<Object> delete(@PathVariable Long id) {
+    todo.deleteById(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+  }
+
   @PostMapping
   public ResponseEntity<Object> save(
-      @RequestBody @Validated ToDoRequest form,
+      @RequestBody @Validated ToDoCreateRequest form,
       BindingResult result
   ) {
     if (result.hasErrors()){
