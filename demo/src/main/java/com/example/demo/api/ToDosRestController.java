@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
 import com.example.demo.request.ToDoCreateRequest;
-import com.example.demo.request.ToDoDeleteRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 @RestController
