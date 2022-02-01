@@ -10,20 +10,20 @@ import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.ToDo;
+import com.example.demo.request.ToDoListRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 @RestController
 @RequestMapping("/api/v1/todos")
 public class ToDosRestController {
@@ -34,12 +34,16 @@ public class ToDosRestController {
   protected StatusRepository status;
 
   @PostMapping
-  public void save(
+  public ResponseEntity<Object> save(
       @RequestBody @Validated ToDoRequest form,
       BindingResult result
   ) {
     if (result.hasErrors()){
-      return;
+      List<String> errors = result.getAllErrors().stream()
+        .map(r-> r.getDefaultMessage())
+        .collect(Collectors.toList()
+      );
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     final var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -50,12 +54,11 @@ public class ToDosRestController {
     entity.setDone(0);
     entity.setUpdateDatetime(LocalDateTime.now().format(dtf));
     todo.save(entity);
+    return ResponseEntity.status(HttpStatus.CREATED).body(null);
   }
 
   @GetMapping
-  public ToDoListResponse getToDoList(
-      @RequestParam(required = false) Integer page
-    ) {
+  public ResponseEntity<ToDoListResponse> getToDoList(ToDoListRequest condition) {
     var mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll()
       .stream()
@@ -77,7 +80,7 @@ public class ToDosRestController {
 
     var result = new ToDoListResponse();
     result.setData(data);
-    result.setPage(page);
-    return result;
+    result.setCondition(condition);
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 }
