@@ -21,15 +21,15 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
 	implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3'
-
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.3'
 
 	// https://mvnrepository.com/artifact/com.github.gwenn/sqlite-dialect
 	implementation group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.2'
@@ -40,7 +40,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.modelmapper.extensions/modelmapper-spring
 	implementation group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '3.0.0'
 
-  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+  //implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 }
 
 test {
