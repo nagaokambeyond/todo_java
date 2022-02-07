@@ -51,19 +51,22 @@ public class ToDoServiceImpl implements ToDoService {
   public ToDoListResponse getList(ToDoListRequest condition) {
     var mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll()
-        .stream()
-        .collect(
-            Collectors.toMap(Status::getId, r -> r));
+      .stream()
+      .collect(
+          Collectors.toMap(Status::getId, r -> r)
+      )
+    ;
 
     final List<ToDoListDataResponse> data = todo.findAll()
-        .stream()
-        .map(r -> {
-          final ToDoListDataResponse row = mod.map(r, ToDoListDataResponse.class);
-          row.setStatusName(map.get(row.getStatusId()).getStatusName());
+      .stream()
+      .map(r -> {
+        final ToDoListDataResponse row = mod.map(r, ToDoListDataResponse.class);
+        row.setStatusName(map.get(row.getStatusId()).getStatusName());
 
-          return row;
-        })
-        .collect(Collectors.toList());
+        return row;
+      })
+      .collect(Collectors.toList())
+    ;
 
     var result = new ToDoListResponse();
     result.setData(data);

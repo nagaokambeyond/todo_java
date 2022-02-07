@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.response.ToDoListResponse;
+import com.example.demo.response.ValidationErrorResponse;
 import com.example.demo.service.ToDoService;
 import com.example.demo.request.ToDoListRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +35,19 @@ public class ToDosRestController {
 
   @PostMapping
   public ResponseEntity<Object> save(
-      @RequestBody @Validated ToDoCreateRequest request,
-      BindingResult result) {
+    @RequestBody @Validated ToDoCreateRequest request,
+    BindingResult result
+  ) {
     if (result.hasErrors()) {
-      List<String> errors = result.getAllErrors().stream()
-          .map(r -> r.getDefaultMessage())
-          .collect(Collectors.toList());
+      List<ValidationErrorResponse> errors = result.getFieldErrors().stream()
+        .map(r -> {
+          var row = new ValidationErrorResponse();
+          row.setFieldName(r.getField());
+          row.setMessage(r.getDefaultMessage());
+          return row;
+      }).collect(Collectors.toList());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-
     service.save(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(null);
   }
