@@ -7,6 +7,7 @@ import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.response.ToDoListResponse;
+import com.example.demo.response.ToDoResponse;
 import com.example.demo.service.ToDoServiceImpl;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
@@ -48,6 +49,22 @@ public class ToDoServiceImpl implements ToDoService {
   }
 
   @Override
+  public ToDoResponse get(Long id){
+    final Map<Long, Status> map = status.findAll()
+      .stream()
+      .collect(
+          Collectors.toMap(Status::getId, r -> r)
+      )
+    ;
+
+    final var row = todo.getById(id);
+    var mod = new ModelMapper();
+    var result = mod.map(row, ToDoResponse.class);
+    result.setStatusName(map.get(result.getStatusId()).getStatusName());
+    return result;
+  }
+
+  @Override
   public ToDoListResponse getList(ToDoListRequest condition) {
     var mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll()
@@ -60,7 +77,7 @@ public class ToDoServiceImpl implements ToDoService {
     final List<ToDoListDataResponse> data = todo.findAll()
       .stream()
       .map(r -> {
-        final ToDoListDataResponse row = mod.map(r, ToDoListDataResponse.class);
+        final var row = mod.map(r, ToDoListDataResponse.class);
         row.setStatusName(map.get(row.getStatusId()).getStatusName());
 
         return row;

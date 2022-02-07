@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.response.ToDoListResponse;
+import com.example.demo.response.ToDoResponse;
 import com.example.demo.response.ValidationErrorResponse;
 import com.example.demo.service.ToDoService;
 import com.example.demo.request.ToDoListRequest;
@@ -50,6 +51,11 @@ public class ToDosRestController {
     }
     service.save(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(null);
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<ToDoResponse> getToDo(@PathVariable Long id){
+    return ResponseEntity.status(HttpStatus.OK).body(service.get(id));
   }
 
   @GetMapping
