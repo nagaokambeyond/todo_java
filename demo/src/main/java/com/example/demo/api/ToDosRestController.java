@@ -3,6 +3,7 @@ package com.example.demo.api;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.example.demo.request.ToDoCreateRequest;
+import com.example.demo.request.ToDoDoneRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
 import com.example.demo.response.ValidationErrorResponse;
@@ -17,9 +18,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.NonNull;
 
 @RestController
 @RequestMapping("/api/v1/todos")
@@ -28,8 +32,29 @@ public class ToDosRestController {
   @Autowired
   protected ToDoService service;
 
+  @PutMapping
+  public ResponseEntity<Object> done(
+    @RequestBody @Validated ToDoDoneRequest request,
+    BindingResult result
+  ) {
+    if (result.hasErrors()) {
+      List<ValidationErrorResponse> errors = result.getFieldErrors().stream()
+        .map(r -> {
+          var row = new ValidationErrorResponse();
+          row.setFieldName(r.getField());
+          row.setMessage(r.getDefaultMessage());
+          return row;
+      }).collect(Collectors.toList());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+    service.done(request);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+  }
+
   @DeleteMapping("{id}")
-  ResponseEntity<Object> delete(@PathVariable Long id) {
+  public ResponseEntity<Object> delete(
+    @PathVariable Long id
+  ) {
     service.delete(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
   }

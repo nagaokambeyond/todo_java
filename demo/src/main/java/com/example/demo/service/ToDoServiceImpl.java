@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
 import com.example.demo.request.ToDoCreateRequest;
+import com.example.demo.request.ToDoDoneRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
 import com.example.demo.service.ToDoServiceImpl;
@@ -32,6 +33,20 @@ public class ToDoServiceImpl implements ToDoService {
   @Override
   public void delete(Long id) {
     todo.deleteById(id);
+  }
+
+  @Transactional
+  @Override
+  public void done(ToDoDoneRequest request) {
+    var entity = todo.getById(request.getId());
+    if(request.getDone()){
+      entity.setDone(1);
+    }else{
+      entity.setDone(0);
+    }
+    final var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    entity.setUpdateDatetime(LocalDateTime.now().format(dtf));
+    todo.save(entity);
   }
 
   @Transactional
