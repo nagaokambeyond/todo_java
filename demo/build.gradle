@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.4'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.springframework.boot' version '2.6.10'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
 }
 
@@ -32,22 +32,22 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
-	implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3'
+	implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.39.3.0'
 
 	// https://mvnrepository.com/artifact/com.github.gwenn/sqlite-dialect
 	implementation group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.2'
 
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 
 	// https://mvnrepository.com/artifact/org.modelmapper.extensions/modelmapper-spring
-	implementation group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '3.0.0'
+	implementation group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '3.1.0'
 
   // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
   //implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
   // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.1'
 }
 
 test {
