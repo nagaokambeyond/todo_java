@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.10'
+	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
 }
@@ -47,7 +47,7 @@ dependencies {
   //implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
   // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.1'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
 }
 
 test {

@@ -38,7 +38,7 @@ public class ToDoServiceImpl implements ToDoService {
   @Transactional
   @Override
   public void done(ToDoDoneRequest request) {
-    var entity = todo.getById(request.getId());
+    var entity = todo.getReferenceById(request.getId());
     if(request.getDone()){
       entity.setDone(1);
     }else{
@@ -72,7 +72,7 @@ public class ToDoServiceImpl implements ToDoService {
       )
     ;
 
-    final var row = todo.getById(id);
+    final var row = todo.getReferenceById(id);
     var mod = new ModelMapper();
     var result = mod.map(row, ToDoResponse.class);
     result.setStatusName(map.get(result.getStatusId()).getStatusName());
