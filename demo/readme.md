@@ -1,3 +1,6 @@
+# swagger-ui
+http://localhost:8090/swagger-ui/index.html
+
 # Spring Bootバージョンアップでわかったこと
 - JpaRepository.getById()→JpaRepository.getReferenceById()
   - https://spring.pleiades.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html#getById-ID-

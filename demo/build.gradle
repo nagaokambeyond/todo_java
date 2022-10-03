@@ -46,6 +46,13 @@ dependencies {
   // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
   //implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+  // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.11'
+  // https://mvnrepository.com/artifact/net.javacrumbs.json-unit/json-unit-spring
+  //implementation group: 'net.javacrumbs.json-unit', name: 'json-unit-spring', version: '2.35.0'
+  // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
+  implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.2'
+
   // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
 }
