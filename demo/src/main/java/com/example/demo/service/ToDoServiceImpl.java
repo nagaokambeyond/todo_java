@@ -9,7 +9,6 @@ import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.request.ToDoDoneRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
-import com.example.demo.service.ToDoServiceImpl;
 import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.ToDo;

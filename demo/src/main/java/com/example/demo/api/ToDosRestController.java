@@ -35,14 +35,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api/v1/todos")
-public class ToDosRestController {
+class ToDosRestController {
 
   @Autowired
   protected ToDoService service;
 
+  @ApiResponses(
+    value = {
+      @ApiResponse(responseCode = "400", description = "失敗", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class)))
+    }
+  )
 	@ExceptionHandler(BindException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<Object> handleBindException(BindException bindException, Locale locale) {
+  ResponseEntity<Object> handleBindException(BindException bindException, Locale locale) {
     List<ValidationErrorResponse> errors = bindException.getFieldErrors().stream()
       .map(r -> {
         var row = new ValidationErrorResponse();
@@ -58,10 +63,9 @@ public class ToDosRestController {
       @ApiResponse(responseCode = "200", description = "成功", content = @Content(mediaType = "application/json"))
     }
   )
-
   @Operation(summary = "ToDoを`Done`に更新する")
   @PutMapping
-  public ResponseEntity<Object> done(
+  ResponseEntity<Object> done(
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated ToDoDoneRequest request,
     BindingResult result
   ) throws BindException {
@@ -79,7 +83,7 @@ public class ToDosRestController {
   )
   @Operation(summary = "ToDoを削除する")
   @DeleteMapping("{id}")
-  public ResponseEntity<Object> delete(
+  ResponseEntity<Object> delete(
     @Parameter(required = true, description = "条件") @PathVariable Long id
   ) {
     service.delete(id);
@@ -93,7 +97,7 @@ public class ToDosRestController {
   )
   @Operation(summary = "ToDoを保存する")
   @PostMapping
-  public ResponseEntity<Object> save(
+  ResponseEntity<Object> save(
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated ToDoCreateRequest request,
     BindingResult result
   ) throws BindException {
@@ -111,7 +115,7 @@ public class ToDosRestController {
   )
   @Operation(summary = "ToDoを取得する")
   @GetMapping("{id}")
-  public ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable Long id){
+  ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable Long id){
     return ResponseEntity.status(HttpStatus.OK).body(service.get(id));
   }
 
@@ -122,7 +126,7 @@ public class ToDosRestController {
   )
   @Operation(summary = "ToDoListを取得する")
   @GetMapping
-  public ResponseEntity<ToDoListResponse> getToDoList(@Parameter(required = true, description = "条件") @RequestBody ToDoListRequest condition) {
+  ResponseEntity<ToDoListResponse> getToDoList(@Parameter(required = true, description = "条件") ToDoListRequest condition) {
     return ResponseEntity.status(HttpStatus.OK).body(service.getList(condition));
   }
 }
