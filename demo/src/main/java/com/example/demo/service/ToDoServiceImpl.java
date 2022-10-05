@@ -24,10 +24,10 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class ToDoServiceImpl implements ToDoService {
   @Autowired
-  protected ToDoRepository todo;
+  ToDoRepository todo;
 
   @Autowired
-  protected StatusRepository status;
+  StatusRepository status;
 
   @Override
   public void delete(Long id) {
