@@ -9,7 +9,7 @@ import com.example.demo.response.ToDoResponse;
 import com.example.demo.response.ValidationErrorResponse;
 import com.example.demo.service.ToDoService;
 import com.example.demo.request.ToDoListRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -33,13 +33,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "TODO API")
 @RequestMapping("/api/v1/todos")
 class ToDosRestController {
 
-  @Autowired
-  ToDoService service;
+  final ToDoService service;
 
   @ApiResponses(value = {
     @ApiResponse(responseCode = "400", description = "失敗", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class)))

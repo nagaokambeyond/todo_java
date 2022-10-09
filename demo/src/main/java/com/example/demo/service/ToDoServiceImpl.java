@@ -13,21 +13,20 @@ import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.ToDo;
 import com.example.demo.request.ToDoListRequest;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@RequiredArgsConstructor
 @Service
 public class ToDoServiceImpl implements ToDoService {
-  @Autowired
-  ToDoRepository todo;
+  final ToDoRepository todo;
 
-  @Autowired
-  StatusRepository status;
+  final StatusRepository status;
 
   @Override
   public void delete(Long id) {
