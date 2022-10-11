@@ -15,16 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,21 +32,6 @@ class ToDosRestController {
 
   final ToDoService service;
 
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "400", description = "失敗", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class)))
-  })
-	@ExceptionHandler(BindException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-  ResponseEntity<Object> handleBindException(BindException bindException) {
-    List<ValidationErrorResponse> errors = bindException.getFieldErrors().stream()
-      .map(r -> {
-        var row = new ValidationErrorResponse();
-        row.setFieldName(r.getField());
-        row.setMessage(r.getDefaultMessage());
-        return row;
-      }).collect(Collectors.toList());
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-	}
 
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "成功", content = @Content(mediaType = "application/json"))
@@ -115,7 +91,7 @@ class ToDosRestController {
   })
   @Operation(summary = "ToDoListを取得する")
   @GetMapping
-  ResponseEntity<ToDoListResponse> getToDoList(@Parameter(required = true, description = "条件") ToDoListRequest condition) {
+  ResponseEntity<ToDoListResponse> getToDoList(@Parameter(required = true, description = "条件") @ModelAttribute @Validated ToDoListRequest condition) {
     return ResponseEntity.status(HttpStatus.OK).body(service.getList(condition));
   }
 }
