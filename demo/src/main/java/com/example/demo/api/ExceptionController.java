@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestControllerAdvice
 public class ExceptionController {
   @ApiResponses(value = {
@@ -25,10 +24,10 @@ public class ExceptionController {
   ResponseEntity<Object> handleBindException(BindException bindException) {
     List<ValidationErrorResponse> errors = bindException.getFieldErrors().stream()
       .map(r -> {
-        var row = new ValidationErrorResponse();
-        row.setFieldName(r.getField());
-        row.setMessage(r.getDefaultMessage());
-        return row;
+        return ValidationErrorResponse.builder()
+          .fieldName(r.getField())
+          .message(r.getDefaultMessage())
+          .build();
       }).collect(Collectors.toList());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }

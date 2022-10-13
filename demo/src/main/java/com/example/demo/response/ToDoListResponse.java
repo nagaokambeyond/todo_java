@@ -1,10 +1,14 @@
 package com.example.demo.response;
 
 import java.util.List;
-import lombok.Data;
+
+import lombok.Builder;
+import lombok.Value;
 import com.example.demo.request.ToDoListRequest;
-@Data
+
+@Builder
+@Value
 public class ToDoListResponse {
-  private ToDoListRequest condition;
-  private List<ToDoListDataResponse> data;
+  private final ToDoListRequest condition;
+  private final List<ToDoListDataResponse> data;
 }

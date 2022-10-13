@@ -1,9 +1,11 @@
 package com.example.demo.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
+@Builder
+@Value
 public class ValidationErrorResponse {
-  private String fieldName;
-  private String message;
+  private final String fieldName;
+  private final String message;
 }

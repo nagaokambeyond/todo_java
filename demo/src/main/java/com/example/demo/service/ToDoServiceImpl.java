@@ -14,10 +14,10 @@ import com.example.demo.entity.Status;
 import com.example.demo.entity.ToDo;
 import com.example.demo.request.ToDoListRequest;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -70,16 +70,24 @@ public class ToDoServiceImpl implements ToDoService {
       )
     ;
 
-    final var row = todo.getReferenceById(id);
-    var mod = new ModelMapper();
-    var result = mod.map(row, ToDoResponse.class);
-    result.setStatusName(map.get(result.getStatusId()).getStatusName());
-    return result;
+    try
+    {
+      final var row = todo.getReferenceById(id);
+      return ToDoResponse.builder()
+        .id(row.getId())
+        .statusId(row.getStatusId())
+        .statusName(map.get(row.getStatusId()).getStatusName())
+        .message(row.getMessage())
+        .done(row.getDone())
+        .updateDatetime(row.getUpdateDatetime())
+        .build();
+    } catch (EntityNotFoundException ex){
+      return null;
+    }
   }
 
   @Override
   public ToDoListResponse getList(ToDoListRequest condition) {
-    var mod = new ModelMapper();
     final Map<Long, Status> map = status.findAll()
       .stream()
       .collect(
@@ -89,18 +97,20 @@ public class ToDoServiceImpl implements ToDoService {
 
     final List<ToDoListDataResponse> data = todo.findAll()
       .stream()
-      .map(r -> {
-        final var row = mod.map(r, ToDoListDataResponse.class);
-        row.setStatusName(map.get(row.getStatusId()).getStatusName());
-
-        return row;
-      })
+      .map(r -> ToDoListDataResponse.builder()
+        .id(r.getId())
+        .statusId(r.getStatusId())
+        .statusName(map.get(r.getStatusId()).getStatusName())
+        .message(r.getMessage())
+        .done(r.getDone())
+        .updateDatetime(r.getUpdateDatetime())
+        .build())
       .collect(Collectors.toList())
     ;
 
-    var result = new ToDoListResponse();
-    result.setData(data);
-    result.setCondition(condition);
-    return result;
+    return ToDoListResponse.builder()
+      .condition(condition)
+      .data(data)
+      .build();
   }
 }

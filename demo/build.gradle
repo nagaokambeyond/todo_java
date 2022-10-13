@@ -38,7 +38,7 @@ dependencies {
 	implementation group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.2'
 
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
+	//implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 
 	// https://mvnrepository.com/artifact/org.modelmapper.extensions/modelmapper-spring
 	implementation group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '3.1.0'
@@ -55,6 +55,9 @@ dependencies {
 
   // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+  // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4'
+
 }
 
 test {

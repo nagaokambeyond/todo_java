@@ -1,13 +1,15 @@
 package com.example.demo.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
+@Builder
+@Value
 public class ToDoListDataResponse {
-  private Long id;
-  private Long statusId;
-  private String statusName;
-  private String message;
-  private Integer done;
-  private String updateDatetime;
+  private final Long id;
+  private final Long statusId;
+  private final String statusName;
+  private final String message;
+  private final Integer done;
+  private final String updateDatetime;
 }
