@@ -1,12 +1,9 @@
 package com.example.demo.api;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.request.ToDoDoneRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
-import com.example.demo.response.ValidationErrorResponse;
 import com.example.demo.service.ToDoService;
 import com.example.demo.request.ToDoListRequest;
 import lombok.RequiredArgsConstructor;

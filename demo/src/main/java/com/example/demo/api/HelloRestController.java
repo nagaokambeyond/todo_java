@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloRestController {
   @GetMapping("/hello")
   public Greeting hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-    var aa = new Greeting(1, "hello" + name);
-
-    return aa;
+    return new Greeting(1, "hello" + name);
   }
 }
