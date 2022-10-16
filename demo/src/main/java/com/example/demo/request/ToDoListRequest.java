@@ -1,9 +1,11 @@
 package com.example.demo.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@Data
+@AllArgsConstructor
+@Value
 public class ToDoListRequest {
-  private Integer page;
-  private Long statusId;
+  Integer page;
+  Long statusId;
 }

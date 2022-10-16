@@ -1,15 +1,18 @@
 package com.example.demo.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Data
+@AllArgsConstructor
+@Value
 public class ToDoCreateRequest {
   @NotNull
-  private Long statusId;
+  Long statusId;
   @NotBlank
   @Size(min = 1, max = 10)
-  private String message;
+  String message;
 }

@@ -1,13 +1,16 @@
 package com.example.demo.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+
 import javax.validation.constraints.NotNull;
 
-@Data
+@AllArgsConstructor
+@Value
 public class ToDoDoneRequest {
   @NotNull
-  private Long id;
+  Long id;
 
   @NotNull
-  private Boolean done;
+  Boolean done;
 }
