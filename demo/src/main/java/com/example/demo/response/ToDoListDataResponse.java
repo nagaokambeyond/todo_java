@@ -6,10 +6,10 @@ import lombok.Value;
 @Builder
 @Value
 public class ToDoListDataResponse {
-  private final Long id;
-  private final Long statusId;
-  private final String statusName;
-  private final String message;
-  private final Integer done;
-  private final String updateDatetime;
+  Long id;
+  Long statusId;
+  String statusName;
+  String message;
+  Integer done;
+  String updateDatetime;
 }

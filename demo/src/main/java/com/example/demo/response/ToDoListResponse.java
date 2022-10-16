@@ -9,6 +9,6 @@ import com.example.demo.request.ToDoListRequest;
 @Builder
 @Value
 public class ToDoListResponse {
-  private final ToDoListRequest condition;
-  private final List<ToDoListDataResponse> data;
+  ToDoListRequest condition;
+  List<ToDoListDataResponse> data;
 }
