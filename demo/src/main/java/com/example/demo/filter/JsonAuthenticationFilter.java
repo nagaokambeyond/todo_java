@@ -12,6 +12,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -33,11 +36,14 @@ public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilt
       // ログイン成功時の挙動
       // JWTを生成してヘッダに設定する
       // レスポンスステータスをHttpServletResponse.SC_OKでレスポンスする
+      final Instant now = Instant.now();
       final String token = JWT.create()
         .withIssuer("com.example.demo.test")          // 発行者
+        .withIssuedAt(Date.from(now))                 // 発行時間
+        .withExpiresAt(Date.from(now.plus(600, ChronoUnit.SECONDS)))  // 有効期限
         .withClaim("username", ex.getName())    // keyに対してvalueの設定。汎用的な様々な値を保持できる
         .sign(Algorithm.HMAC256("secret"))     // 利用アルゴリズムを指定してJWTを新規作成
-        ;
+      ;
       res.setHeader("X-AUTH-TOKEN", token);     // tokeをX-AUTH-TOKENというKeyにセットする
       res.setStatus(HttpServletResponse.SC_OK);
     });

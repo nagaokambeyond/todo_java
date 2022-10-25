@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.filter.JsonAuthenticationFilter;
+import com.example.demo.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
         authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))
       )
     );
+    http.addFilterAfter(new LoginFilter(),JsonAuthenticationFilter.class);
     return http.build();
   }
 
