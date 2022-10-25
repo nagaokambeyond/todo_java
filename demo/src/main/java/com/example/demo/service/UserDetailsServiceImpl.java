@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,17 +19,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    List<User> entity = userRepository.findByName(username);
-    Optional<User> first = entity.stream().findFirst();
-    if (first.isPresent()){
-      User user = first.get();
-
-      return new org.springframework.security.core.userdetails.User(
-        user.getName(),
-        user.getPassword(),
-        AuthorityUtils.createAuthorityList()
-      );
+    final List<User> entity = userRepository.findByName(username);
+    if (entity.isEmpty()) {
+      throw new UsernameNotFoundException("該当データなし");
     }
-    throw new UsernameNotFoundException("");
+    final Optional<User> first = entity.stream().findFirst();
+    final User user = first.orElseThrow(() -> new UsernameNotFoundException(""));
+
+    return new org.springframework.security.core.userdetails.User(
+      user.getName(),
+      user.getPassword(),
+      AuthorityUtils.createAuthorityList()
+    );
   }
 }

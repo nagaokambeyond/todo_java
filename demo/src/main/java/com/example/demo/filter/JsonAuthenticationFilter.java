@@ -30,30 +30,36 @@ public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     setPasswordParameter("password");
 
     this.setAuthenticationSuccessHandler((req, res, ex) -> {
-      // ログイン成功時、トークンをヘッダに付けて終了する
-      String token = JWT.create()
-        .withIssuer("com.volkruss.toaru")             // 発行者
+      // ログイン成功時の挙動
+      // JWTを生成してヘッダに設定する
+      // レスポンスステータスをHttpServletResponse.SC_OKでレスポンスする
+      final String token = JWT.create()
+        .withIssuer("com.example.demo.test")          // 発行者
         .withClaim("username", ex.getName())    // keyに対してvalueの設定。汎用的な様々な値を保持できる
         .sign(Algorithm.HMAC256("secret"))     // 利用アルゴリズムを指定してJWTを新規作成
-      ;
+        ;
       res.setHeader("X-AUTH-TOKEN", token);     // tokeをX-AUTH-TOKENというKeyにセットする
       res.setStatus(HttpServletResponse.SC_OK);
     });
 
     this.setAuthenticationFailureHandler((req, res, ex) -> {
-      // ログイン失敗時
+      // ログイン失敗時の挙動
+      // レスポンスステータスをHttpServletResponse.SC_UNAUTHORIZEDでレスポンスする
       res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     });
   }
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-    if (!request.getMethod().equals(HttpMethod.POST.toString())){
+    if (!request.getMethod().equals(HttpMethod.POST.toString())) {
       return null;
     }
-    String username = obtainUsername(request);
-    String password = obtainPassword(request);
-    // これでデフォルトのProviderを利用しつつ、ユーザーレコードの取得に関してはUserDetailsServiceの実装クラスのloadUserByUsernameを利用する
+
+    // ログインAPIのリクエスト内容を取得する
+    final String username = obtainUsername(request);
+    final String password = obtainPassword(request);
+
+    // UserDetailsService.loadUserByUsername()が反応する
     return this.authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>())
     );
