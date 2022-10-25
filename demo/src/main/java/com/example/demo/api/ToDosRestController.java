@@ -2,24 +2,26 @@ package com.example.demo.api;
 
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.request.ToDoDoneRequest;
+import com.example.demo.request.ToDoListRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
 import com.example.demo.service.ToDoService;
-import com.example.demo.request.ToDoListRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindException;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +30,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 class ToDosRestController {
 
   final ToDoService service;
-
 
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "成功", content = @Content(mediaType = "application/json"))
@@ -88,7 +89,9 @@ class ToDosRestController {
   })
   @Operation(summary = "ToDoListを取得する")
   @GetMapping
-  ResponseEntity<ToDoListResponse> getToDoList(@Parameter(required = true, description = "条件") @ModelAttribute @Validated ToDoListRequest condition) {
+  ResponseEntity<ToDoListResponse> getToDoList(
+    @Parameter(required = true, description = "条件") @ModelAttribute @Validated ToDoListRequest condition
+  ) {
     return ResponseEntity.status(HttpStatus.OK).body(service.getList(condition));
   }
 }

@@ -1,10 +1,10 @@
 package com.example.demo.response;
 
-import java.util.List;
-
+import com.example.demo.request.ToDoListRequest;
 import lombok.Builder;
 import lombok.Value;
-import com.example.demo.request.ToDoListRequest;
+
+import java.util.List;
 
 @Builder
 @Value

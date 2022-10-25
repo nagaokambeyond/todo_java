@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.request.ToDoDoneRequest;
+import com.example.demo.request.ToDoListRequest;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
-import com.example.demo.request.ToDoListRequest;
 
 public interface ToDoService {
   void delete(Long id);

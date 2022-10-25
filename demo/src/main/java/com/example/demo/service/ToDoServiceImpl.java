@@ -1,18 +1,15 @@
 package com.example.demo.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.example.demo.entity.Status;
+import com.example.demo.entity.ToDo;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.repository.ToDoRepository;
 import com.example.demo.request.ToDoCreateRequest;
 import com.example.demo.request.ToDoDoneRequest;
+import com.example.demo.request.ToDoListRequest;
+import com.example.demo.response.ToDoListDataResponse;
 import com.example.demo.response.ToDoListResponse;
 import com.example.demo.response.ToDoResponse;
-import com.example.demo.response.ToDoListDataResponse;
-import com.example.demo.entity.Status;
-import com.example.demo.entity.ToDo;
-import com.example.demo.request.ToDoListRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
