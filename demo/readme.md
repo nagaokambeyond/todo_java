@@ -1,8 +1,13 @@
 # swagger-ui
 http://localhost:8090/swagger-ui/index.html
 
-# 正常系
+# ログイン
 - POST http://localhost:8090/api/login
+```
+X-AUTH-TOKEN
+```
+
+# 正常系
 - GET http://localhost:8090/api/v1/todos
 - GET http://localhost:8090/api/v1/todos/1
 - POST http://localhost:8090/api/v1/todos

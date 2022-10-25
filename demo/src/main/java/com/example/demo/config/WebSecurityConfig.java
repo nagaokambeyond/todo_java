@@ -16,8 +16,8 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(auth -> auth
-      .mvcMatchers("/**").permitAll()
       .antMatchers("/api/login").permitAll()
+      .antMatchers("/api/v1/**").authenticated()
     );
     //).csrf().disable();   // これがあると/api/loginが通らない
     http.csrf().ignoringAntMatchers("/api/**");
