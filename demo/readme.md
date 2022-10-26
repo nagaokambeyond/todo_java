@@ -7,6 +7,12 @@ http://localhost:8090/swagger-ui/index.html
 X-AUTH-TOKEN
 ```
 
+# X-AUTH-TOKEN
+- TokenExpiredException確認用
+  ```
+  Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb20uZXhhbXBsZS5kZW1vLnRlc3QiLCJleHAiOjE2NjY3MTc3NjQsImlhdCI6MTY2NjcxNzE2NCwidXNlcm5hbWUiOiJ1c2VyIn0.qrgxILGEwdTy4yijEWd1v25vueGJ4RHy229eN40P1rw
+  ```
+
 # 正常系
 - GET http://localhost:8090/api/v1/todos
 - GET http://localhost:8090/api/v1/todos/1

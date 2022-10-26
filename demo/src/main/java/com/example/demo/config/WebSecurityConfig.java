@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.filter.JsonAuthenticationFilter;
+import com.example.demo.filter.JwtAuthenticationFilter;
 import com.example.demo.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +23,11 @@ public class WebSecurityConfig {
     //).csrf().disable();   // これがあると/api/loginが通らない
     http.csrf().ignoringAntMatchers("/api/**");
     http.addFilter(
-      new JsonAuthenticationFilter(
+      new JwtAuthenticationFilter(
         authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))
       )
     );
-    http.addFilterAfter(new LoginFilter(),JsonAuthenticationFilter.class);
+    http.addFilterAfter(new LoginFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }
 
