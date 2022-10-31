@@ -2,7 +2,9 @@ package com.example.demo.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,16 +27,23 @@ public class LoginFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
-    final String token = header.substring(7);
 
-    // Tokenの検証と認証を行う
-    final DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256("secret")).build().verify(token);
+    try {
+      final String token = header.substring(7);
 
-    // ログイン状態を設定する
-    final String username = decodedJWT.getClaim("username").toString();
-    SecurityContextHolder.getContext().setAuthentication(
-      new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>())
-    );
-    filterChain.doFilter(request, response);
+      // Tokenの検証と認証を行う
+      final DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256("secret")).build().verify(token);
+
+      // ログイン状態を設定する
+      final String username = decodedJwt.getClaim("username").toString();
+      SecurityContextHolder.getContext().setAuthentication(
+        new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>())
+      );
+      filterChain.doFilter(request, response);
+    } catch (TokenExpiredException e) {
+      // verify()時のチェックで有効期限切れなど
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      response.getWriter().write(e.getMessage());
+    }
   }
 }

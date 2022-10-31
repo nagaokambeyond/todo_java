@@ -16,8 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -80,7 +78,7 @@ class ToDosRestController {
   })
   @Operation(summary = "ToDoを取得する")
   @GetMapping("{id}")
-  ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable Long id){
+  ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(service.get(id));
   }
 
