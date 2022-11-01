@@ -15,10 +15,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-  final UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
     final List<User> entity = userRepository.findByName(username);
     if (entity.isEmpty()) {
       throw new UsernameNotFoundException("該当データなし");

@@ -24,22 +24,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class ToDoServiceImpl implements ToDoService {
-  final ToDoRepository todo;
+  private final ToDoRepository todo;
 
-  final StatusRepository status;
+  private final StatusRepository status;
 
   @Override
-  public void delete(Long id) {
+  public void delete(final Long id) {
     todo.deleteById(id);
   }
 
   @Transactional
   @Override
-  public void done(ToDoDoneRequest request) {
+  public void done(final ToDoDoneRequest request) {
     var entity = todo.getReferenceById(request.getId());
-    if(request.getDone()){
+    if (request.getDone()) {
       entity.setDone(1);
-    }else{
+    } else {
       entity.setDone(0);
     }
     final var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -49,7 +49,7 @@ public class ToDoServiceImpl implements ToDoService {
 
   @Transactional
   @Override
-  public void save(ToDoCreateRequest request) {
+  public void save(final ToDoCreateRequest request) {
     final var dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     var entity = new ToDo();
@@ -62,16 +62,14 @@ public class ToDoServiceImpl implements ToDoService {
   }
 
   @Override
-  public ToDoResponse get(Long id){
+  public ToDoResponse get(final Long id) {
     final Map<Long, Status> map = status.findAll()
       .stream()
       .collect(
           Collectors.toMap(Status::getId, r -> r)
-      )
-    ;
+      );
 
-    try
-    {
+    try {
       final var row = todo.getReferenceById(id);
       return ToDoResponse.builder()
         .id(row.getId())
@@ -81,19 +79,18 @@ public class ToDoServiceImpl implements ToDoService {
         .done(row.getDone())
         .updateDatetime(row.getUpdateDatetime())
         .build();
-    } catch (EntityNotFoundException ex){
+    } catch (EntityNotFoundException ex) {
       return null;
     }
   }
 
   @Override
-  public ToDoListResponse getList(ToDoListRequest condition) {
+  public ToDoListResponse getList(final ToDoListRequest condition) {
     final Map<Long, Status> map = status.findAll()
       .stream()
       .collect(
           Collectors.toMap(Status::getId, r -> r)
-      )
-    ;
+      );
 
     final List<ToDoListDataResponse> data = todo.findAll()
       .stream()
@@ -105,8 +102,7 @@ public class ToDoServiceImpl implements ToDoService {
         .done(r.getDone())
         .updateDatetime(r.getUpdateDatetime())
         .build())
-      .collect(Collectors.toList())
-    ;
+      .collect(Collectors.toList());
 
     return ToDoListResponse.builder()
       .condition(condition)

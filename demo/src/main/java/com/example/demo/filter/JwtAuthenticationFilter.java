@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
 
-  public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
+  public JwtAuthenticationFilter(final AuthenticationManager manager) {
+    this.authenticationManager = manager;
 
     // ログインパスを設定
     setRequiresAuthenticationRequestMatcher(
@@ -32,31 +32,30 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     setUsernameParameter("username");
     setPasswordParameter("password");
 
-    this.setAuthenticationSuccessHandler((req, res, ex) -> {
+    this.setAuthenticationSuccessHandler((request, response, ex) -> {
       // ログイン成功時の挙動
       // JWTを生成してヘッダに設定する
       // レスポンスステータスをHttpServletResponse.SC_OKでレスポンスする
       final Instant now = Instant.now();
       final String token = JWT.create()
-        .withIssuer("com.example.demo.test")          // 発行者
-        .withIssuedAt(Date.from(now))                 // 発行時間
+        .withIssuer("com.example.demo.test")            // 発行者
+        .withIssuedAt(Date.from(now))                   // 発行時間
         .withExpiresAt(Date.from(now.plus(600, ChronoUnit.SECONDS)))  // 有効期限
-        .withClaim("username", ex.getName())    // keyに対してvalueの設定。汎用的な様々な値を保持できる
-        .sign(Algorithm.HMAC256("secret"))     // 利用アルゴリズムを指定してJWTを新規作成
-      ;
-      res.setHeader("X-AUTH-TOKEN", token);     // tokeをX-AUTH-TOKENというKeyにセットする
-      res.setStatus(HttpServletResponse.SC_OK);
+        .withClaim("username", ex.getName())      // keyに対してvalueの設定。汎用的な様々な値を保持できる
+        .sign(Algorithm.HMAC256("secret"));      // 利用アルゴリズムを指定してJWTを新規作成
+      response.setHeader("X-AUTH-TOKEN", token);  // tokeをX-AUTH-TOKENというKeyにセットする
+      response.setStatus(HttpServletResponse.SC_OK);
     });
 
-    this.setAuthenticationFailureHandler((req, res, ex) -> {
+    this.setAuthenticationFailureHandler((request, response, ex) -> {
       // ログイン失敗時の挙動
       // レスポンスステータスをHttpServletResponse.SC_UNAUTHORIZEDでレスポンスする
-      res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     });
   }
 
   @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+  public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) throws AuthenticationException {
     if (!request.getMethod().equals(HttpMethod.POST.toString())) {
       return null;
     }

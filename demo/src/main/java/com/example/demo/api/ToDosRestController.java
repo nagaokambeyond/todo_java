@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/todos")
 class ToDosRestController {
 
-  final ToDoService service;
+  private final ToDoService service;
 
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "成功", content = @Content(mediaType = "application/json"))
@@ -35,8 +35,8 @@ class ToDosRestController {
   @Operation(summary = "ToDoを`Done`に更新する")
   @PutMapping
   ResponseEntity<Object> done(
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated ToDoDoneRequest request,
-    BindingResult result
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated final ToDoDoneRequest request,
+    final BindingResult result
   ) throws BindException {
     if (result.hasErrors()) {
       throw new BindException(result);
@@ -51,7 +51,7 @@ class ToDosRestController {
   @Operation(summary = "ToDoを削除する")
   @DeleteMapping("{id}")
   ResponseEntity<Object> delete(
-    @Parameter(required = true, description = "条件") @PathVariable Long id
+    @Parameter(required = true, description = "条件") @PathVariable final Long id
   ) {
     service.delete(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -63,8 +63,8 @@ class ToDosRestController {
   @Operation(summary = "ToDoを保存する")
   @PostMapping
   ResponseEntity<Object> save(
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated ToDoCreateRequest request,
-    BindingResult result
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "登録内容") @RequestBody @Validated final ToDoCreateRequest request,
+    final BindingResult result
   ) throws BindException {
     if (result.hasErrors()) {
       throw new BindException(result);
@@ -78,7 +78,7 @@ class ToDosRestController {
   })
   @Operation(summary = "ToDoを取得する")
   @GetMapping("{id}")
-  ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable Long id) {
+  ResponseEntity<ToDoResponse> getToDo(@Parameter(required = true, description = "条件") @PathVariable final Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(service.get(id));
   }
 
@@ -88,7 +88,7 @@ class ToDosRestController {
   @Operation(summary = "ToDoListを取得する")
   @GetMapping
   ResponseEntity<ToDoListResponse> getToDoList(
-    @Parameter(required = true, description = "条件") @ModelAttribute @Validated ToDoListRequest condition
+    @Parameter(required = true, description = "条件") @ModelAttribute @Validated final ToDoListRequest condition
   ) {
     return ResponseEntity.status(HttpStatus.OK).body(service.getList(condition));
   }
