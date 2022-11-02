@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 @Value
 public class ToDoDoneRequest {
   @NotNull
-  Long id;
+  private Long id;
 
   @NotNull
-  Boolean done;
+  private Boolean done;
 }

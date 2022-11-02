@@ -11,8 +11,8 @@ import javax.validation.constraints.Size;
 @Value
 public class ToDoCreateRequest {
   @NotNull
-  Long statusId;
+  private Long statusId;
   @NotBlank
   @Size(min = 1, max = 10)
-  String message;
+  private String message;
 }

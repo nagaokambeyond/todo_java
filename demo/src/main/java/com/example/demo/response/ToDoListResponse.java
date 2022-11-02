@@ -9,6 +9,6 @@ import java.util.List;
 @Builder
 @Value
 public class ToDoListResponse {
-  ToDoListRequest condition;
-  List<ToDoListDataResponse> data;
+  private ToDoListRequest condition;
+  private List<ToDoListDataResponse> data;
 }

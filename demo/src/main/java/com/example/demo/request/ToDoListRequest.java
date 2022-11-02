@@ -6,6 +6,6 @@ import lombok.Value;
 @AllArgsConstructor
 @Value
 public class ToDoListRequest {
-  Integer page;
-  Long statusId;
+  private Integer page;
+  private Long statusId;
 }

@@ -6,6 +6,6 @@ import lombok.Value;
 @Builder
 @Value
 public class ValidationErrorResponse {
-  String fieldName;
-  String message;
+  private String fieldName;
+  private String message;
 }
