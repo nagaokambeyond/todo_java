@@ -55,7 +55,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   }
 
   @Override
-  public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) throws AuthenticationException {
+  public Authentication attemptAuthentication(
+    final HttpServletRequest request,
+    final HttpServletResponse response
+  ) throws AuthenticationException {
     if (!request.getMethod().equals(HttpMethod.POST.toString())) {
       return null;
     }
@@ -66,7 +69,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     // UserDetailsService.loadUserByUsername()が反応する
     return this.authenticationManager.authenticate(
-      new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>())
+      new UsernamePasswordAuthenticationToken(
+        username, password, new ArrayList<>()
+      )
     );
   }
 }

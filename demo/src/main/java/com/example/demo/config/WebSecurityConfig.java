@@ -15,7 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(
+    final HttpSecurity http
+  ) throws Exception {
     http.authorizeHttpRequests(auth -> auth
       .antMatchers("/api/login").permitAll()      // 制限なし
       .antMatchers("/api/v1/**").authenticated()  // 要ログイン
@@ -24,7 +26,9 @@ public class WebSecurityConfig {
     http.csrf().ignoringAntMatchers("/api/**");
     http.addFilter(
       new JwtAuthenticationFilter(
-        authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))
+        authenticationManager(
+          http.getSharedObject(AuthenticationConfiguration.class)
+        )
       )
     );
     http.addFilterAfter(new LoginFilter(), JwtAuthenticationFilter.class);
@@ -32,7 +36,9 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) throws Exception {
+  public AuthenticationManager authenticationManager(
+    final AuthenticationConfiguration authenticationConfiguration
+  ) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 

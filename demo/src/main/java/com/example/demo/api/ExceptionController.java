@@ -17,13 +17,20 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionController {
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "400", description = "失敗", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "失敗",
+      content = @Content(
+        mediaType = "application/json",
+        schema = @Schema(implementation = ValidationErrorResponse.class)
+      )
+    )
   })
   @ExceptionHandler(BindException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  ResponseEntity<Object> handleBindException(final BindException bindException) {
-    List<ValidationErrorResponse> errors = bindException.getFieldErrors().stream()
-      .map(r -> ValidationErrorResponse.builder()
+  ResponseEntity<Object> handleBindException(
+    final BindException bindException
+  ) {
+    List<ValidationErrorResponse> errors = bindException.getFieldErrors()
+      .stream().map(r -> ValidationErrorResponse.builder()
         .fieldName(r.getField())
         .message(r.getDefaultMessage())
         .build()).collect(Collectors.toList());

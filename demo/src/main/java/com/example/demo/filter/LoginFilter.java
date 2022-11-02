@@ -18,7 +18,11 @@ import java.util.ArrayList;
 
 public class LoginFilter extends OncePerRequestFilter {
   @Override
-  protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(
+    final HttpServletRequest request,
+    final HttpServletResponse response,
+    final FilterChain filterChain
+  ) throws ServletException, IOException {
     // headerからTokenを取得する
     final String tokenHeader = request.getHeader("X-AUTH-TOKEN");
     final String tokenPrefix = "Bearer ";
@@ -34,12 +38,17 @@ public class LoginFilter extends OncePerRequestFilter {
       final String token = tokenHeader.substring(tokenPrefix.length());
 
       // Tokenの検証と認証を行う
-      final DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256("secret")).build().verify(token);
+      final DecodedJWT decodedJwt = JWT
+        .require(Algorithm.HMAC256("secret"))
+        .build()
+        .verify(token);
 
       // ログイン状態を設定する
       final String username = decodedJwt.getClaim("username").toString();
       SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>())
+        new UsernamePasswordAuthenticationToken(
+          username, null, new ArrayList<>()
+        )
       );
       filterChain.doFilter(request, response);
     } catch (TokenExpiredException e) {

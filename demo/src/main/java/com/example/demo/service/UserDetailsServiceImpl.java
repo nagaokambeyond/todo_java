@@ -18,13 +18,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Override
-  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(
+    final String username
+  ) throws UsernameNotFoundException {
     final List<User> entity = userRepository.findByName(username);
     if (entity.isEmpty()) {
       throw new UsernameNotFoundException("該当データなし");
     }
     final Optional<User> first = entity.stream().findFirst();
-    final User user = first.orElseThrow(() -> new UsernameNotFoundException(""));
+    final User user =
+      first.orElseThrow(() -> new UsernameNotFoundException(""));
 
     return new org.springframework.security.core.userdetails.User(
       user.getName(),
