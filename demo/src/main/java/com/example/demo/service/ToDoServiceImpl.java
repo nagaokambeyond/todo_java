@@ -24,8 +24,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class ToDoServiceImpl implements ToDoService {
+  /**
+   * @see ToDoRepository .
+   */
   private final ToDoRepository todo;
 
+  /**
+   * @see StatusRepository .
+   */
   private final StatusRepository status;
 
   @Override

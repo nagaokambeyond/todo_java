@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class LoginFilter extends OncePerRequestFilter {
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
     // headerからTokenを取得する
     final String tokenHeader = request.getHeader("X-AUTH-TOKEN");
     final String tokenPrefix = "Bearer ";

@@ -12,14 +12,14 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User {
   @Id
-  Integer id;
+  private Integer id;
 
   @Column(nullable = false)
-  String name;
+  private String name;
 
   @Column(nullable = false)
-  String password;
+  private String password;
 
   @Column(nullable = false)
-  String role;
+  private String role;
 }

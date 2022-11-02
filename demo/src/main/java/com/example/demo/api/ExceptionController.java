@@ -21,7 +21,7 @@ public class ExceptionController {
   })
   @ExceptionHandler(BindException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  ResponseEntity<Object> handleBindException(BindException bindException) {
+  ResponseEntity<Object> handleBindException(final BindException bindException) {
     List<ValidationErrorResponse> errors = bindException.getFieldErrors().stream()
       .map(r -> ValidationErrorResponse.builder()
         .fieldName(r.getField())
