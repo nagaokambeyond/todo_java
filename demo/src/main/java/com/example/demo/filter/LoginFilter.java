@@ -20,16 +20,18 @@ public class LoginFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     // headerからTokenを取得する
-    final String header = request.getHeader("X-AUTH-TOKEN");
+    final String tokenHeader = request.getHeader("X-AUTH-TOKEN");
+    final String tokenPrefix = "Bearer ";
 
-    //　チェック処理
-    if (header == null || !header.startsWith("Bearer ")) {
-      filterChain.doFilter(request, response);
+    if (tokenHeader == null || !tokenHeader.startsWith(tokenPrefix)) {
+      // トークンなし
+      // トークンが意図した形ではない
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
       return;
     }
 
     try {
-      final String token = header.substring(7);
+      final String token = tokenHeader.substring(tokenPrefix.length());
 
       // Tokenの検証と認証を行う
       final DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256("secret")).build().verify(token);
