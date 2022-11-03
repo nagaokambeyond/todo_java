@@ -1,1 +1,3 @@
-# todo_java
+- spring securityは5.7系を使用している
+- ログインはAPIで行いJWTをレスポンスする
+- ログインAPI以外のAPIはJWTをチェックしている
