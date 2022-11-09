@@ -34,11 +34,17 @@ public class ToDoServiceImpl implements ToDoService {
    */
   private final StatusRepository status;
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void delete(final Long id) {
     todo.deleteById(id);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Transactional
   @Override
   public void done(final ToDoDoneRequest request) {
@@ -53,6 +59,9 @@ public class ToDoServiceImpl implements ToDoService {
     todo.save(entity);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Transactional
   @Override
   public void save(final ToDoCreateRequest request) {
@@ -67,6 +76,9 @@ public class ToDoServiceImpl implements ToDoService {
     todo.save(entity);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ToDoResponse get(final Long id) {
     final Map<Long, Status> map = status.findAll()
@@ -90,6 +102,9 @@ public class ToDoServiceImpl implements ToDoService {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ToDoListResponse getList(final ToDoListRequest condition) {
     final Map<Long, Status> map = status.findAll()
