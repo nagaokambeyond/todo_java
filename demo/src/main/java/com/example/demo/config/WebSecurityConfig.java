@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -24,15 +25,15 @@ public class WebSecurityConfig {
     final HttpSecurity http
   ) throws Exception {
     http.authorizeHttpRequests(auth -> auth
-      .antMatchers(
+      .requestMatchers(
         "/api/login",
         "/api-docs/**", "/swagger-ui/**"    // swagger表示用であるため制限なし
       ).permitAll()      // 制限なし
-      .antMatchers("/api/v1/**").authenticated()  // 要ログイン
+      .requestMatchers("/api/v1/**").authenticated()  // 要ログイン
     );
     //).csrf().disable();   // これがあると/api/loginが通らない
-    http.csrf().ignoringAntMatchers("/api/**");
-    http.cors().configurationSource(corsConfigurationSource());
+    http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
+    http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
     http.addFilter(
       new JwtAuthenticationFilter(
         authenticationManager(
@@ -60,8 +61,8 @@ public class WebSecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173/"));
-    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowedOrigins(List.of("http://localhost:5173/"));
+    configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
     configuration.addExposedHeader("X-AUTH-TOKEN");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
